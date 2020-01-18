@@ -4,11 +4,30 @@
 --               for moving turtle)  --
 ---------------------------------------
 
+-- loadAPI --
 os.loadAPI("/lib/weldsk/logging")
 
+-- settings --
 LOG_FILEPATH = "/log/eturtle.log"
 CACHE_FILEPATH = "/cache/eturtle.cache"
 
+-- const --
+COMMAND = {}
+COMMAND["forward"]   = turtle.forward
+COMMAND["back"]      = turtle.back
+COMMAND["up"]        = turtle.up
+COMMAND["down"]      = turtle.down
+COMMAND["turnRight"] = turtle.turnRight
+COMMAND["turnLeft"]  = turtle.turnLeft
+RESUME_COMMAND = {}
+RESUME_COMMAND["forward"]   = turtle.back
+RESUME_COMMAND["back"]      = turtle.forward
+RESUME_COMMAND["up"]        = turtle.down
+RESUME_COMMAND["down"]      = turtle.up
+RESUME_COMMAND["turnRight"] = turtle.turnLeft
+RESUME_COMMAND["turnLeft"]  = turtle.turnRight
+
+-- program --
 eturtle_log = logging.load(LOG_FILEPATH)
 _load_cache()
 
@@ -52,52 +71,52 @@ function craft(...)
 end
 
 function forward()
-    _write_cache("forward()")
+    _write_cache("forward")
     local success, message = turtle.forward()
     if success then
-        eturtle_log:writeLog("forward()")
+        eturtle_log:writeLog("forward")
     end
     _clear_cache()
     return success, message
 end
 
 function back()
-    _write_cache("back()")
+    _write_cache("back")
     local success, message = turtle.back()
     if success then
-        eturtle_log:writeLog("back()")
+        eturtle_log:writeLog("back")
     end
     _clear_cache()
     return success, message
 end
 
 function up()
-    _write_cache("up()")
+    _write_cache("up")
     local success, message = turtle.up()
     if success then
-        eturtle_log:writeLog("up()")
+        eturtle_log:writeLog("up")
     end
     _clear_cache()
     return success, message
 end
 
 function down()
-    _write_cache("down()")
+    _write_cache("down")
     local success, message = turtle.down()
     if success then
-        eturtle_log:writeLog("down()")
+        eturtle_log:writeLog("down")
     end
     _clear_cache()
     return success, message
 end
 
 function turnLeft()
-    eturtle_log:writeLog("turnLeft()")
+    eturtle_log:writeLog("turnLeft")
     return turtle.turnLeft()
 end
 
 function turnRight()
-    eturtle_log:writeLog("turnRight()")
+    eturtle_log:writeLog("turnRight")
     return turtle.turnRight()
 end
 
@@ -264,13 +283,6 @@ function dump(...)
     return retval
 end
 
-RESUME_COMMAND = {}
-RESUME_COMMAND["forward()"]   = turtle.back
-RESUME_COMMAND["back()"]      = turtle.forward
-RESUME_COMMAND["up()"]        = turtle.down
-RESUME_COMMAND["down()"]      = turtle.up
-RESUME_COMMAND["turnRight()"] = turtle.turnLeft
-RESUME_COMMAND["turnLeft()"]  = turtle.turnRight
 
 --- Resume
 function resume(time)
@@ -280,11 +292,11 @@ function resume(time)
     while true do
         local log = eturtle_log:readLog(time)
         if not log then
-            break
+            -- log is nil
+            return true
         end
         command = RESUME_COMMAND[log["message"]]
-        if not command then
-            break
+        if command then
         end
 
         local can_reduce = false
@@ -307,12 +319,18 @@ function resume(time)
         -- optimize code --
 
         if not can_reduce then
-            _write_cache("#DELETE")
-            if command() then
-                eturtle_log:deleteLog()
+            while true do
+                _write_cache("#DELETE")
+                if command() then
+                    eturtle_log:deleteLog()
+                    _clear_cache()
+                    break
+                end
+                _clear_cache()
+                sleep(0.5)
             end
-            _clear_cache()
         end
+
     end
 end
 

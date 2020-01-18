@@ -137,10 +137,10 @@ function _deleteLog(self, time)
 end
 
 function _loadFile(filepath)
-    local retval = {}
+    local loaded_table = {}
 
     if not fs.exists(filepath) then
-        return retval;
+        return loaded_table;
     end
 
     local log_file = fs.open(filepath, "r")
@@ -149,15 +149,19 @@ function _loadFile(filepath)
         if log_line then
             local time, message = _lineToLog(log_line)
             if time and message then
-                if time == -1 then
-                    if message == "#DELETE" then
-                        table.remove(retval, #retval)
+                if string.len(message) > 0 then
+                    if string.sub(message, 1, 1) == "#" then
+                        -- exec #COMMAND
+                        if message == "#DELETE" then
+                            table.remove(loaded_table, #loaded_table)
+                        end
+                    else
+                        -- load Log
+                        local log = {}
+                        log["time"] = time
+                        log["message"] = message
+                        table.insert(loaded_table, log)
                     end
-                else
-                    local log = {}
-                    log["time"] = time
-                    log["message"] = message
-                    table.insert(retval, log)
                 end
             end
         else
@@ -165,5 +169,5 @@ function _loadFile(filepath)
         end
     end
     log_file.close()
-    return retval
+    return loaded_table
 end

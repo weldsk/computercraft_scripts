@@ -517,71 +517,47 @@ end
 -- main
 function main()
     local range = args[1]
-    local is_success, num, message
+    local is_success = false -- success or fail
+    local progress = 0       -- Flow Progress: (progress / range)
+    local message  = nil     -- reason it failed
 
+    -- init
     eturtle.clear()
 
-    is_success, num, message = miningFlow(range)
-    if ret == false then
-        if message == nil then
-            error("miningFlow: failed.")
-            eturtle.resume()
-        elseif message == "NEED_EMPTY_SLOT" then
-            eturtle.resume()
-            eturtle.turnRight()
-            eturtle.turnRight()
-            while true do
-                storeStorage()
-                if countEmptySlot() >= TURTLE_NEED_EMPTY_SLOT_MIN then
-                    break
-                end
-            end
-            eturtle.turnRight()
-            eturtle.turnRight()
-            eturtle.clear()
-            main()
-        elseif message == "STOP" then
-        else
-            error("miningFlow: failed.")
-            eturtle.resume()
+    -- Mining Flow (Create 2x1 tunnel)
+    while true do
+        is_success, progress, message = miningFlow(range)
+        if is_success == true then
+            break
         end
-        eturtle.clear()
-        return false
+
+        -- resume
+        eturtle.resume()
+        
+        -- look back
+        eturtle.turnRight()
+        eturtle.turnRight()
+
+        -- try empty inventory
+        storeStorage()
+
+        -- look forward
+        eturtle.turnRight()
+        eturtle.turnRight()
     end
 
     eturtle.turnRight()
     eturtle.turnRight()
 
-    is_success, num, message = torchFlow(range)
-    if ret == false then
-        if message == "NEED_EMPTY_SLOT" then
-            for i=1, (range - num) do
-                if not(tryMoveForward()) then
-                    turtle.resume()
-                    eturtle.clear()
-                    return false
-                end
-            end
-            if not(tryMoveDown()) then
-                eturtle.clear()
-                return false
-            end
-            while true do
-                if countEmptySlot() >= TURTLE_NEED_EMPTY_SLOT_MIN then
-                    break
-                end
-            end
-            eturtle.turnRight()
-            eturtle.turnRight()
-            eturtle.clear()
-            return main()
-        elseif message == "STOP" then
-        else
-            error("torchFlow: failed.")
-            eturtle.resume()
+    -- torchFlow
+    local is_success = false -- success or fail
+    local progress = 0       -- Flow Progress: (progress / range)
+    local message  = nil     -- reason it failed
+    while true do
+        is_success, num, message = torchFlow(range)
+        if is_success == true then
+            break
         end
-        eturtle.clear()
-        return false
     end
     storeStorage()
     eturtle.clear()
