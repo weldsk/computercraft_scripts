@@ -538,7 +538,7 @@ function main()
         eturtle.turnRight()
         eturtle.turnRight()
 
-        -- try empty inventory
+        -- wait for empty inventory
         storeStorage()
 
         -- look forward
@@ -558,6 +558,30 @@ function main()
         if is_success == true then
             break
         end
+
+        -- resume
+        eturtle.resume()
+        
+        -- look back
+        eturtle.turnRight()
+        eturtle.turnRight()
+
+        -- wait for empty inventory
+        storeStorage()
+
+        -- look forward
+        eturtle.turnRight()
+        eturtle.turnRight()
+        
+        -- goto torchFlow StartPoint (= miningFlowEndPoint)
+        for i = 1, range do
+            autoDump()
+            autoRefuel()
+            tryMoveForward()
+        end
+
+        eturtle.turnRight()
+        eturtle.turnRight()
     end
     storeStorage()
     eturtle.clear()
