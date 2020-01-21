@@ -305,7 +305,7 @@ function resume(time)
         if (command == turtle.turnRight) or (command == turtle.turnLeft) then
             for i=2, 4 do
                 local tmp_log = eturtle_log:readLog(time, i)
-                if tmp_log then
+                if not tmp_log then
                     break
                 end
                 if log["message"] ~= tmp_log["message"] then
