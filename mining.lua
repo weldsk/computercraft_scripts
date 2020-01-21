@@ -22,6 +22,7 @@ AUTODUMP_LIST =
 STORAGE_LIST =
 {
     "chest",
+    "shulker",
 }
 FLUID_LIST =
 {
@@ -33,6 +34,7 @@ AUTODUMP_NUM = 8
 BLOCK_BLACKLIST =
 {
     "chest",
+    "shulker",
     "turtle",
     "builder",
     "quarry",
