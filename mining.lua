@@ -275,7 +275,7 @@ function tryMoveForward(retry_times)
     end
 
     -- try move
-    local i
+    local i = 0
     while true do
         if i >= retry_times then
             return false
@@ -307,7 +307,7 @@ function tryMoveUp(retry_times)
     end
 
     -- try move
-    local i
+    local i = 0
     while true do
         if i >= retry_times then
             return false
@@ -339,7 +339,7 @@ function tryMoveDown(retry_times)
     end
 
     -- try move
-    local i
+    local i = 0
     while true do
         if i >= retry_times then
             return false

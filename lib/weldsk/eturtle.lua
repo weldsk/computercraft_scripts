@@ -29,7 +29,6 @@ RESUME_COMMAND["turnLeft"]  = turtle.turnRight
 
 -- program --
 eturtle_log = logging.load(LOG_FILEPATH)
-_load_cache()
 
 
 function _load_cache()
@@ -65,6 +64,8 @@ function _clear_cache()
     local cache_file = fs.open(CACHE_FILEPATH, "w")
     cache_file.close()
 end
+
+_load_cache()
 
 function craft(...)
     return turtle.craft(...)
@@ -304,6 +305,9 @@ function resume(time)
         if (command == turtle.turnRight) or (command == turtle.turnLeft) then
             for i=2, 4 do
                 local tmp_log = eturtle_log:readLog(time, i)
+                if tmp_log then
+                    break
+                end
                 if log["message"] ~= tmp_log["message"] then
                     break
                 end
