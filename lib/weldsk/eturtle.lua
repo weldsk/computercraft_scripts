@@ -269,12 +269,13 @@ function dump(...)
         return retval
     end
 
+    local log = logging.getTime()
     for i = 1, 3 do
         turnRight()
         if turtle.detect() then
             retval = drop(...)
             if retval then
-                resume()
+                resume(time)
                 return retval;
             end
         end
