@@ -1,6 +1,9 @@
-----------------------
---      mining      --
-----------------------
+---------------------------------------
+--  Mining Program                   --
+--    for CC:Tweaked                 --
+--    Ver 1.01                       --
+---------------------------------------
+
 
 ---- load libs ----
 os.loadAPI("/lib/weldsk/eturtle")
@@ -22,7 +25,7 @@ AUTODUMP_LIST =
 STORAGE_LIST =
 {
     "chest",
-    "shulker",
+    "shulker"
 }
 FLUID_LIST =
 {
@@ -279,8 +282,12 @@ function tryMoveForward(retry_times)
     -- try move
     local i = 0
     while true do
-        if i >= retry_times then
-            return false
+        if retry_times >= 0 then
+            if i >= retry_times then
+                return false
+            else
+                i = i + 1
+            end
         end
         -- mining
         if not(mining()) then
@@ -294,8 +301,6 @@ function tryMoveForward(retry_times)
 
         -- attack
         turtle.attack()
-        
-        i = i + 1
     end
 
     error('Can\'t move! blocked by enemy or no fuel.')
@@ -311,8 +316,12 @@ function tryMoveUp(retry_times)
     -- try move
     local i = 0
     while true do
-        if i >= retry_times then
-            return false
+        if retry_times >= 0 then
+            if i >= retry_times then
+                return false
+            else
+                i = i + 1
+            end
         end
         -- mining
         if not(miningUp()) then
@@ -320,13 +329,12 @@ function tryMoveUp(retry_times)
         end
 
         -- try move
-        if eturtle.Up() then
+        if eturtle.up() then
             return true
         end
 
         -- attack
         turtle.attackUp()
-        
         i = i + 1
     end
 
@@ -343,8 +351,12 @@ function tryMoveDown(retry_times)
     -- try move
     local i = 0
     while true do
-        if i >= retry_times then
-            return false
+        if retry_times >= 0 then
+            if i >= retry_times then
+                return false
+            else
+                i = i + 1
+            end
         end
         -- mining
         if not(miningDown()) then
@@ -352,7 +364,7 @@ function tryMoveDown(retry_times)
         end
 
         -- try move
-        if eturtle.Down() then
+        if eturtle.down() then
             return true
         end
 

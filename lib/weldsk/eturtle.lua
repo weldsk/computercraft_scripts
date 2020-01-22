@@ -2,6 +2,7 @@
 --  enhanced turtle API              --
 --      (turtle function wrapper     --
 --               for moving turtle)  --
+--    Ver 1.01                       --
 ---------------------------------------
 
 -- loadAPI --
@@ -269,7 +270,7 @@ function dump(...)
         return retval
     end
 
-    local log = logging.getTime()
+    local time = logging.getTime()
     for i = 1, 3 do
         turnRight()
         if turtle.detect() then
@@ -281,7 +282,7 @@ function dump(...)
         end
     end
     turnRight()
-    
+
     return retval
 end
 
@@ -298,7 +299,8 @@ function resume(time)
             return true
         end
         command = RESUME_COMMAND[log["message"]]
-        if command then
+        if not command then
+            break
         end
 
         local can_reduce = false

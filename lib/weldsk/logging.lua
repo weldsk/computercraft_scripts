@@ -1,5 +1,7 @@
 ---------------------------------------
 --  Log API                          --
+--    for CC:Tweaked                 --
+--    Ver 1.01                       --
 ---------------------------------------
 
 SLICE_CHAR = ":"
@@ -46,7 +48,7 @@ function _create_instance(filepath)
 end
 
 function getTime()
-    return os.clock()
+    return os.epoch("utc")
 end
 
 --- Write Log
