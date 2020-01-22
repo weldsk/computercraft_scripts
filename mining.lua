@@ -1,7 +1,7 @@
 ---------------------------------------
 --  Mining Program                   --
 --    for CC:Tweaked                 --
---    Ver 1.01                       --
+--    Ver 1.02                       --
 ---------------------------------------
 
 
@@ -500,7 +500,7 @@ function storeStorage()
     local item
     local is_success, block
     local is_storage = false
-
+    
     is_success, block = turtle.inspect()
     if is_success then
         for i=1, #STORAGE_LIST do
@@ -553,7 +553,12 @@ function main()
         eturtle.turnRight()
 
         -- wait for empty inventory
-        storeStorage()
+        while true do
+            storeStorage()
+            if countEmptySlot() >= TURTLE_NEED_EMPTY_SLOT_MIN then
+                break
+            end
+        end
 
         -- look forward
         eturtle.turnRight()
@@ -581,7 +586,12 @@ function main()
         eturtle.turnRight()
 
         -- wait for empty inventory
-        storeStorage()
+        while true do
+            storeStorage()
+            if countEmptySlot() >= TURTLE_NEED_EMPTY_SLOT_MIN then
+                break
+            end
+        end
 
         -- look forward
         eturtle.turnRight()
