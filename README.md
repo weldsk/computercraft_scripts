@@ -7,8 +7,8 @@
 
 - Mining Program
   - 1(width) x 2(height) Mining
-  - Refuel
-  - Dispoing
-  - Torch (Anti Mob Spawning)
+  - Refuel from inventry
+  - Auto Dispoing
+  - Place torch (Anti Mob Spawning)
   - Storing to chests (not working)
   
